@@ -1,6 +1,7 @@
 <template>
   <line-out/>
   <cmd-input/>
+  <line-expand/>
 </template>
 
 <script lang="ts">
@@ -8,18 +9,21 @@ import { defineComponent, ref, provide } from 'vue';
 
 import CmdInput from '@/components/LineInput/CmdInput.vue'
 import LineOut from "@/components/LineOut/LineOut.vue";
+import LineExpand from '@/components/LineOut/LineExpand.vue'
 
 import { provideCmdContext } from "@/store/cmdHistory";
+import {init} from "@/service/fileSystem/db";
 
 export default defineComponent({
   name: 'App',
   components: {
     CmdInput,
-    LineOut
+    LineOut,
+    LineExpand
   },
   setup() {
     provideCmdContext()
-
+    init()
     const ps1 = ref('root@dick$ ')
     provide('ps1', ps1)
   }

@@ -3,23 +3,22 @@
     <p v-for="(v, k) in history"
        :key="`his-${k}`"
        class="logs"
-    >{{ps1}} {{ v }}</p>
+    >{{ v }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, inject} from 'vue'
+import {defineComponent} from 'vue'
 import {injectCmdContext} from "@/store/cmdHistory";
 
 export default defineComponent({
   name: "LineOut",
   setup() {
-    const { history } = injectCmdContext()
-    const ps1 = inject<string>('ps1', '')
+    const {history, println} = injectCmdContext()
 
     return {
       history,
-      ps1,
+      println
     }
   }
 })

@@ -1,27 +1,29 @@
-import {inject, provide, Ref, ref} from 'vue'
+import {inject, provide, ref} from 'vue'
+import {CmdContext} from "@/types/CmdContext";
 
 const modName = 'CmdContext'
-
-type CmdContext = {
-    history: Ref<string[]>
-}
-
 const CmdContextSymbol = Symbol(modName)
 
-export const provideCmdContext = (): void => {
-    const history = ref(new Array<string>())
+const history = ref(new Array<string>())
 
-    provide(CmdContextSymbol, {
-        history
-    })
+export const cmdContext = {
+  history,
+  println(t: string): void {
+    history.value.push(t)
+  },
+  clear(): void {
+    history.value.length = 0
+  }
+}
+
+export const provideCmdContext = (): void => {
+  provide<CmdContext>(CmdContextSymbol, cmdContext)
 }
 
 export const injectCmdContext = (): CmdContext => {
-    const cmdContext = inject<CmdContext>(CmdContextSymbol)
+  const cmdContext = inject<CmdContext>(CmdContextSymbol)
 
-    if (!cmdContext) {
-        throw new Error()
-    }
+  if (!cmdContext) {throw new Error()}
 
-    return cmdContext
+  return cmdContext
 }
